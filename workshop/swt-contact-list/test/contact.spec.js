@@ -27,7 +27,6 @@ test('GET /contects/:id', function(t) {
         .expect(200)
         .then(function(res) {
             let contacts = res.body
-            t.equal(11, contacts.length, "there shouldhas length is 11, when open /contects/id.")
             t.equal(contacts.id, 2, "id at position 0 should be 11.")
             t.equal(contacts.name, 'Samwell Tarly', "get name at id 2")
             t.equal(contacts.email, 'starly@castleblack.com', "get email at id 2")
@@ -49,9 +48,15 @@ test('POST /contacts', (t) => {
     request(app).post('/contacts')
         .send(obj)
         .expect(201)
+        .end(function(err, res) {
+            if (err) throw err;
+        })
+
+    request(app).get('/contacts/12')
+        // there should be 200 "OK"
+        .expect(200)
         .then((res) => {
-            let contact = res.body
-            t.equal(12, contacts.length, "there should has length at 12, when update contact.")
+            let contacts = res.body
             t.equal('thakdanai chanklom', contacts[0].name, "name at position 0 should be thakdanai chanklom.")
             t.equal('thakdanai@chanklom.com', contacts[0].email, "email at position 0 should be thakdanai@chanklom.com.")
             t.equal('086-222-5894', contacts[0].phone, "phone at position 0 should be 086-222-5894.")
